@@ -51,3 +51,68 @@ MEMORY {
     /* SCRATCH_B: ORIGIN = 0x20041000, LENGTH = 4K    */
 }
 ```
+
+## nusb
+
+Embassy has several USB programs ready to go. For example, a fake HID mouse can be created on the RPi by
+
+```
+cd embassy/examples
+cargo run --release --bin usb_hid_mouse  <------- this will cause the mouse pointer to jump around the screen
+
+lsusb  <------- this will show the connected HID device
+```
+
+For bulk HID USB transfers using ```nusb```
+
+```
+cd embassy/examples
+cargo run --release --bin usb_raw_bulk
+```
+
+Bulk transfers using ```nusb``` require some PC based code and access to the USB port:
+
+```
+sudo touch 70-plugdev-usb.rules
+SUBSYSTEM=="usb", MODE="0660", GROUP="plugdev"  <------- copy this into the rules file
+sudo nano 70-plugdev-usb.rules
+sudo udevadm control --reload  <------- ensure new rules are used
+sudo udevadm trigger <------- ensure new rules are applied to already added devices
+```
+
+To perform a USB transfer, ```main.rs``` is copied from within ```usb_raw_bulk.rs```:
+
+```
+use futures_lite::future::block_on;
+use nusb::transfer::RequestBuffer;
+
+const BULK_OUT_EP: u8 = 0x01;
+const BULK_IN_EP: u8 = 0x81;
+
+fn main() {
+    let di = nusb::list_devices()
+        .unwrap()
+        .find(|d| d.vendor_id() == 0xc0de && d.product_id() == 0xcafe)
+        .expect("no device found");
+    let device = di.open().expect("error opening device");
+    let interface = device.claim_interface(0).expect("error claiming interface");
+
+    let result = block_on(interface.bulk_out(BULK_OUT_EP, b"hello world".into()));
+    println!("{result:?}");
+    let result = block_on(interface.bulk_in(BULK_IN_EP, RequestBuffer::new(64)));
+    println!("{result:?}");
+}
+```
+
+and ```cargo.toml``` is:
+
+```
+[package]
+name = "nusb_rpi_embassy"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+nusb = "0.1.9"
+futures-lite = "2.3.0"
+```
