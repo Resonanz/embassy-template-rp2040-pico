@@ -54,7 +54,7 @@ MEMORY {
 
 ## nusb
 
-Embassy has several USB programs ready to go. For example, a fake HID mouse can be created on the RPi by
+Embassy has several USB programs ready to go. For example, a fake HID mouse can be created on the RPi by:
 
 ```
 cd embassy/examples
@@ -63,7 +63,7 @@ cargo run --release --bin usb_hid_mouse  <------- this will cause the mouse poin
 lsusb  <------- this will show the connected HID device
 ```
 
-For bulk HID USB transfers using ```nusb```
+For bulk HID USB transfers using ```nusb```:
 
 ```
 cd embassy/examples
@@ -116,3 +116,12 @@ edition = "2021"
 nusb = "0.1.9"
 futures-lite = "2.3.0"
 ```
+
+```cargo run```:
+
+```
+Completion { data: ResponseBuffer { transferred: 11, .. }, status: Ok(()) }
+Completion { data: [104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100], status: Ok(()) }
+```
+
+Nice !!!
