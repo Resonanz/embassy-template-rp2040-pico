@@ -12,7 +12,7 @@ To use elf2uf2, you must first install ```elf2uf2-rs```
 cargo install elf2uf2-rs --locked
 ```
 
-The usual ```.cargo/config.toml``` file runner (e.g. ```runner = "probe-rs run --chip STM32L010RBTx"```) then needs replacing with ```elf2uf2-rs```.
+The usual ```.cargo/config.toml``` file runner (e.g. ```runner = "probe-rs run --chip STM32L010RBTx"```) needs replacing with ```elf2uf2-rs```.
 
 ```
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
