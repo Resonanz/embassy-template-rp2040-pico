@@ -4,7 +4,7 @@ This is a WIP.
 
 probe-rs does not work on a solitary RPi Pico board. Unlike the STM Nucleo boards that have built-in hardware for programming the microcontroller, the RPi Pico does not.
 
-If you must use probe-rs, then look on this page for how to use a second RPi Pico as a USB JTAG/debug probe: https://github.com/rp-rs/rp-hal 
+(To use probe-rs, see this page for using a second RPi Pico as a USB JTAG/debug probe: https://github.com/rp-rs/rp-hal.)
 
 To use elf2uf2, you must first install ```elf2uf2-rs```
 
