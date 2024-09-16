@@ -9,6 +9,10 @@ To use probe-rs using a second RPi Pico as a USB JTAG/debug probe:
 * https://github.com/rp-rs/rp-hal
 * https://reltech.substack.com/p/getting-started-with-rust-on-a-raspberry
 
+## No debugging probe?
+
+See this: https://embassy.dev/book/#_how_to_deploy_to_rp2040_without_a_debugging_probe
+
 To use elf2uf2, you must first install ```elf2uf2-rs```
 
 ```
@@ -19,6 +23,10 @@ The Runner in ```.cargo/config.toml``` needs replacing with ```elf2uf2-rs```.
 
 ```
 [target.'cfg(all(target_arch = "arm", target_os = "none"))']
+runner = "elf2uf2-rs --deploy --serial --verbose" # <<< Perhaps this leaves a serial port comms channel open in bash?
+
+OR
+
 runner = "elf2uf2-rs -d"
 
 [build]
